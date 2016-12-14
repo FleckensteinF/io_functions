@@ -42,10 +42,12 @@ namespace Tools{
      * basic io functions to write data into files
      * and read data from files using different container structures
      */
+    template<class T> bool writeToFile(const std::string& filepath, const std::vector<T>& input, const char& separator, const std::string& infoLine="");
     template<class T> bool writeToFile(const std::string& filepath, const std::vector<std::vector<T> >& input, const char& separator, const std::string& infoLine="");
     template<class T> bool writeToFile(const std::string& filepath, const std::vector<std::pair<std::string, std::vector<T> > >& input, const char& separator, const std::string& infoLine="");
     template<class T> bool writeToFile(const std::string& filepath, const std::map<std::string, std::vector<T> >& input, const char& separator, const std::string& infoLine="");
 
+    template<class T> bool readFromFile(const std::string& filepath, std::vector<T>& result, const char& separator, std::string* infoLine=NULL);
     template<class T> bool readFromFile(const std::string& filepath, std::vector<std::vector<T> >& result, const char& separator, std::string* infoLine=NULL);
     template<class T> bool readFromFile(const std::string& filepath, std::vector<std::pair<std::string,std::vector<T> > >& result, const char& separator, std::string* infoLine=NULL);
     template<class T> bool readFromFile(const std::string& filepath, std::map<std::string,std::vector<T> >& result, const char& separator, std::string* infoLine=NULL);

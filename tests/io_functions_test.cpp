@@ -125,6 +125,26 @@ protected:
   std::vector<std::vector<float> > _dataVector;
 };
 
+
+TEST_F(ReadWriteTest, simpleVector){
+  std::vector<int> result;
+  std::vector<int> input;
+  input.push_back(3);
+  input.push_back(2);
+  input.push_back(0);
+  //std::string infoLine = "hello";
+  //std::string resultingInfoLine;
+  std::string filename = "vec.txt";
+  IOFunctions::writeToFile<int>(filename, input, '\n');
+  IOFunctions::readFromFile<int>(filename, result, '\n');
+  
+  //EXPECT_EQ(infoLine, resultingInfoLine);
+  ASSERT_EQ(input.size(), result.size());
+  for(size_t i = 0; i < result.size(); ++i){
+    EXPECT_EQ(input[i], result[i]);
+  }
+}
+
 TEST_F(ReadWriteTest, pairWithInfoLine){
   std::vector<std::pair<std::string, std::vector<float> > > result;
   std::string infoLine = "hello";

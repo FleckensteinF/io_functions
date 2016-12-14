@@ -5,8 +5,6 @@
 
 #include "png_processor.h"
 
-using std::vector;
-
 /*PngProcessor::PngProcessor():
   error(false)
 {

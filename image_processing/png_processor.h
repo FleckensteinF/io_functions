@@ -6,8 +6,6 @@
 #include <fstream>
 #include <vector>
 
-using std::vector;
-
 //class PngProcessor{
 // public:
   struct PngWithInfo{
@@ -18,7 +16,7 @@ using std::vector;
     int number_of_passes;
     //png_bytep * row_pointers;
     unsigned char header[8];    // 8 is the maximum size that can be checked
-    vector<float> data;
+    std::vector<float> data;
     bool error;
   };
 //

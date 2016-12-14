@@ -84,6 +84,28 @@ template<class T> bool IOFunctions::writeToFile(const std::string& filepath, con
   return false;
 };
 
+template<class T> bool IOFunctions::writeToFile(const std::string& filepath, const std::vector<T>& input, const char& separator, const std::string& infoLine){
+  std::ofstream output;
+  output.open(filepath.c_str());
+  if(!output.good()){
+    std::cerr << "Error opening file " << filepath << "!" << std::endl;
+    return true;
+  } 
+ if(infoLine.compare("") != 0){
+    output << infoLine << std::endl;
+  }
+
+  for(size_t i = 0; i < input.size()-1; ++i){
+    output << input[i] << separator;
+  }
+  output << input[input.size()-1];
+  output.close();
+#ifdef DEBUG
+  std::cout << "wrote to file " << filepath << std::endl;
+#endif
+  return false;
+};
+
 template<class T> bool IOFunctions::writeToFile(const std::string& filepath, const std::vector<std::vector<T> >& input, const char& separator, const std::string& infoLine){
   std::vector<std::pair<std::string, std::vector<T> > > transformedInput;
   for(size_t i = 0; i < input.size(); ++i){
@@ -161,6 +183,75 @@ template<class T> bool IOFunctions::readFromFile(const std::string& filepath, st
     result.push_back(std::pair<std::string,std::vector<T> >(key,elements));
     //}
   }
+  input.close();
+  return false;
+}
+
+template<class T> bool IOFunctions::readFromFile(const std::string& filepath, std::vector<T>& result, const char& separator, std::string* infoLine){
+  std::ifstream input;
+  std::string line, buff;
+  input.open(filepath.c_str()); 
+  if(!input.good()){
+    std::cerr << "Error opening file " << filepath << "!" << std::endl;
+    return true;
+  }
+        
+  if(infoLine){
+    getline(input, *infoLine);
+  }
+  if(separator == '\n'){
+    while(input.good()){
+      T in;
+      input >> in;
+      result.push_back(in);
+    }
+    input.close();
+    return false;
+  }
+
+  while(input.good()){
+    getline(input, line);
+    if(line.size() == 0){
+      continue;
+    }
+    size_t separatorPos =  line.find(separator);
+    while(separatorPos != std::string::npos && line.size() > 0){
+      buff = line.substr(0, separatorPos); 
+      line = line.substr(separatorPos+1);
+      result.push_back(fromString<T>(buff));
+      separatorPos =  line.find(separator);
+    }
+    result.push_back(fromString<T>(line));
+  }
+
+    /*getline(input, line);
+    if(line.size() == 0){
+      continue;
+    }
+    elements.clear();
+    key = line;
+    onlyKeyInLine = true;
+    if(std::string::npos != line.find(separator)){
+      onlyKeyInLine = false;
+      key = line.substr(0, line.find(separator));
+      line = line.substr(line.find(separator)+1);      
+#ifdef DEBUG
+      std::cout << "found key \'" << key << "\' with value "; 
+      std::cout << line << std::endl;
+#endif
+    }
+    while(std::string::npos != line.find(separator)){
+      buff = line.substr(0, line.find(separator)); 
+      line = line.substr(line.find(separator)+1);
+      elements.push_back(fromString<T>(buff));
+    }
+    if(line.size() != 0 && !onlyKeyInLine){
+      elements.push_back(fromString<T>(line));
+    }
+    //if(elements.size() != 0){ -> wrong! want to also add lines with only one value = key
+    result.push_back(std::pair<std::string,std::vector<T> >(key,elements));
+    //} 
+    }*/
   input.close();
   return false;
 }
