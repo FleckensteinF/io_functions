@@ -1,0 +1,20 @@
+SET(LIB_PREFIX tools_)
+
+ADD_LIBRARY(image_processing
+  png_processor.h 
+  png_processor.cpp 
+)
+
+TARGET_LINK_LIBRARIES(image_processing   
+  png)
+
+SET_TARGET_PROPERTIES(image_processing PROPERTIES OUTPUT_NAME ${LIB_PREFIX}image_processing)
+
+INSTALL(TARGETS image_processing
+  RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
+  LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+)
+
+FILE(GLOB headers "${CMAKE_CURRENT_SOURCE_DIR}/*.h" "${CMAKE_CURRENT_SOURCE_DIR}/*.hpp")
+INSTALL(FILES ${headers} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/${PROJECT_NAME}/image_processing)

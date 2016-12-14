@@ -1,0 +1,74 @@
+#ifndef _TOOLS_INTEGRAL_INTEGRAL_H_
+#define _TOOLS_INTEGRAL_INTEGRAL_H_
+
+#include "math_functions/function.h"
+
+#include <vector>
+
+namespace Tools{
+  namespace Integral{
+    template<class Numeric> 
+      Numeric trapezArea(const Numeric& a, const Numeric& c, const Numeric&h);
+    template<class Numeric> 
+      Numeric halfIntervalVolume(const Numeric (&functionValues)[3], const Numeric& intervalSize);
+    template<class Numeric, size_t dim>
+      class IntegralBase{
+    public:
+      typedef Eigen::Matrix<Numeric, dim, 1> InputValue;
+      IntegralBase(const Numeric& intervallSize=1e-1);
+      virtual Numeric integrate(const InputValue& minValue, const InputValue& maxValue) const = 0;
+      const Numeric& intervallSize() const;
+    protected:
+      Numeric _intervallSize;
+    };
+    template<class Numeric>
+      class IntegralBase<Numeric, 1>{
+    public:
+      typedef Numeric InputValue;
+      IntegralBase(const Numeric& intervalSize=1e-1);
+      virtual Numeric integrate(const InputValue& minValue, const InputValue& maxValue) const = 0;
+      const Numeric& intervallSize() const;
+    protected:
+      Numeric _intervallSize;
+    };
+
+    template<class Numeric, size_t dim>
+      class IntegralOverFunction : public IntegralBase<Numeric, dim>{
+    public:
+      typedef typename IntegralBase<Numeric, dim>::InputValue InputValue;
+      typedef Functions::Function<Numeric, dim, 1> FunctionType;
+      IntegralOverFunction(FunctionType const* function, const Numeric& intervallSize);
+      Numeric integrate(const InputValue& minValue, const InputValue& maxValue) const;
+    protected:
+      FunctionType const* _function;
+    };
+
+    template<class Numeric>
+      class IntegralOverFunction<Numeric, 1> : public IntegralBase<Numeric, 1>{
+    public:
+      typedef typename IntegralBase<Numeric, 1>::InputValue InputValue;
+      typedef Functions::Function<Numeric, 1, 1> FunctionType;
+      IntegralOverFunction(FunctionType const* function, const Numeric& intervallSize);
+      Numeric integrate(const InputValue& minValue, const InputValue& maxValue) const;
+    protected:
+      FunctionType const* _function;
+    };
+
+    template<class Numeric>
+      class IntegralOverFunction<Numeric, 2> : public IntegralBase<Numeric, 2>{
+    public:
+      typedef typename IntegralBase<Numeric, 2>::InputValue InputValue;
+      typedef Functions::Function<Numeric, 2, 1> FunctionType;
+      IntegralOverFunction(FunctionType const* function, const Numeric& intervallSize);
+      Numeric integrate(const InputValue& minValue, const InputValue& maxValue) const;
+    protected:
+      FunctionType const* _function;
+      Numeric intervallVolume(const std::vector<std::vector<Numeric> >& values, const size_t& x, const size_t& y, const Numeric& stepsize) const;
+    };
+  };
+};
+
+
+#include "integral.hpp"
+
+#endif // _TOOLS_INTEGRAL_INTEGRAL_H_

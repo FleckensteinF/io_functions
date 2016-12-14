@@ -1,0 +1,22 @@
+SET(LIB_PREFIX tools_)
+
+ADD_LIBRARY(eigen_helper
+  transformations.h
+  transformations.cpp
+  mean.h 
+  mean.hpp
+)
+
+#TARGET_LINK_LIBRARIES(eigen_helper
+#)
+
+SET_TARGET_PROPERTIES(eigen_helper PROPERTIES OUTPUT_NAME ${LIB_PREFIX}eigen_helper)
+
+INSTALL(TARGETS eigen_helper
+  RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
+  LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+)
+
+FILE(GLOB headers "${CMAKE_CURRENT_SOURCE_DIR}/*.h" "${CMAKE_CURRENT_SOURCE_DIR}/*.hpp")
+INSTALL(FILES ${headers} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/eigen_helper)

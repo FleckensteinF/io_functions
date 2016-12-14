@@ -1,0 +1,22 @@
+SET(LIB_PREFIX tools_)
+
+ADD_LIBRARY(functions
+  exp_lookup.cpp
+  gaussian_lookup.cpp
+)
+
+#TARGET_LINK_LIBRARIES(sampler
+#  #boost_system
+#  #boost_filesystem
+#)
+
+SET_TARGET_PROPERTIES(functions PROPERTIES OUTPUT_NAME ${LIB_PREFIX}functions)
+
+INSTALL(TARGETS functions
+  RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
+  LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+)
+
+FILE(GLOB headers "${CMAKE_CURRENT_SOURCE_DIR}/*.h" "${CMAKE_CURRENT_SOURCE_DIR}/*.hpp")
+INSTALL(FILES ${headers} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/${PROJECT_NAME}/functions)
