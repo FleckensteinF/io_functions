@@ -224,34 +224,6 @@ template<class T> bool IOFunctions::readFromFile(const std::string& filepath, st
     result.push_back(fromString<T>(line));
   }
 
-    /*getline(input, line);
-    if(line.size() == 0){
-      continue;
-    }
-    elements.clear();
-    key = line;
-    onlyKeyInLine = true;
-    if(std::string::npos != line.find(separator)){
-      onlyKeyInLine = false;
-      key = line.substr(0, line.find(separator));
-      line = line.substr(line.find(separator)+1);      
-#ifdef DEBUG
-      std::cout << "found key \'" << key << "\' with value "; 
-      std::cout << line << std::endl;
-#endif
-    }
-    while(std::string::npos != line.find(separator)){
-      buff = line.substr(0, line.find(separator)); 
-      line = line.substr(line.find(separator)+1);
-      elements.push_back(fromString<T>(buff));
-    }
-    if(line.size() != 0 && !onlyKeyInLine){
-      elements.push_back(fromString<T>(line));
-    }
-    //if(elements.size() != 0){ -> wrong! want to also add lines with only one value = key
-    result.push_back(std::pair<std::string,std::vector<T> >(key,elements));
-    //} 
-    }*/
   input.close();
   return false;
 }
